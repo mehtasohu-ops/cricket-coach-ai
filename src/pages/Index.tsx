@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { UploadZone } from "@/components/UploadZone";
 import { ActionSelector } from "@/components/ActionSelector";
 import { AnalysisResult } from "@/components/AnalysisResult";
-import { Loader2, RotateCcw } from "lucide-react";
+import { Loader2, RotateCcw, GraduationCap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/cricket-hero.jpg";
 
 const Index = () => {
@@ -118,9 +119,15 @@ const Index = () => {
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
             Cricket Action Analyzer
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
             AI-powered analysis for your bowling, batting, and throwing technique
           </p>
+          <Link to="/expert-advice">
+            <Button variant="outline" size="lg" className="gap-2">
+              <GraduationCap className="w-5 h-5" />
+              Learn from Experts
+            </Button>
+          </Link>
         </div>
       </section>
 
