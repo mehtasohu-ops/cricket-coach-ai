@@ -45,15 +45,13 @@ const Index = () => {
         throwing: ['throw', 'throwing', 'field']
       };
 
-      // Check if video matches selected action (with 30% random mismatch for files without keywords)
-      const matchingKeywords = actionKeywords[selectedAction as keyof typeof actionKeywords];
-      const hasMatchingKeyword = matchingKeywords.some(keyword => fileName.includes(keyword));
+      // Check if video has keywords for a DIFFERENT action type
       const hasOtherActionKeyword = Object.entries(actionKeywords)
         .filter(([action]) => action !== selectedAction)
         .some(([_, keywords]) => keywords.some(keyword => fileName.includes(keyword)));
 
-      // If filename has different action keyword, or random 30% chance for generic filenames
-      const isValidAction = hasOtherActionKeyword ? false : (hasMatchingKeyword || Math.random() > 0.3);
+      // Only reject if filename clearly indicates a different action
+      const isValidAction = !hasOtherActionKeyword;
 
       if (!isValidAction) {
         setIsAnalyzing(false);
