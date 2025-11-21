@@ -37,6 +37,34 @@ const Index = () => {
 
     // Simulate AI analysis (in production, this would call your backend)
     setTimeout(() => {
+      // Simulate video validation - check if filename matches action type
+      const fileName = videoFile.name.toLowerCase();
+      const actionKeywords = {
+        bowling: ['bowl', 'bowling', 'bowler'],
+        batting: ['bat', 'batting', 'batter', 'shot'],
+        throwing: ['throw', 'throwing', 'field']
+      };
+
+      // Check if video matches selected action (with 30% random mismatch for files without keywords)
+      const matchingKeywords = actionKeywords[selectedAction as keyof typeof actionKeywords];
+      const hasMatchingKeyword = matchingKeywords.some(keyword => fileName.includes(keyword));
+      const hasOtherActionKeyword = Object.entries(actionKeywords)
+        .filter(([action]) => action !== selectedAction)
+        .some(([_, keywords]) => keywords.some(keyword => fileName.includes(keyword)));
+
+      // If filename has different action keyword, or random 30% chance for generic filenames
+      const isValidAction = hasOtherActionKeyword ? false : (hasMatchingKeyword || Math.random() > 0.3);
+
+      if (!isValidAction) {
+        setIsAnalyzing(false);
+        toast({
+          title: "Action mismatch detected",
+          description: `This video doesn't appear to be a ${selectedAction} action. Please select the correct action type or upload a different video.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
       const mockResult = {
         score: Math.floor(Math.random() * 30) + 65, // Random score between 65-95
         actionType: selectedAction,
